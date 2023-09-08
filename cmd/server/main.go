@@ -39,16 +39,16 @@ func webhandle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// разбиваем запрос и проверяем соответствии формату
-	reqUrl := strings.Split(r.URL.Path, "/")
-	if len(reqUrl) != 5 || reqUrl[1] != "update" {
+	reqURL := strings.Split(r.URL.Path, "/")
+	if len(reqURL) != 5 || reqURL[1] != "update" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 
 	// обработка запроса
-	metricsType := reqUrl[2]
-	metricsName := reqUrl[3]
-	metricsValue := reqUrl[4]
+	metricsType := reqURL[2]
+	metricsName := reqURL[3]
+	metricsValue := reqURL[4]
 	if metricsType == "counter" {
 		if value, err := strconv.ParseInt(metricsValue, 10, 64); err == nil {
 			storage.counterData[metricsName] += counter(value)
