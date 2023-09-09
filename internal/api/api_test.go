@@ -38,6 +38,7 @@ func TestWebHandle(t *testing.T) {
 			h(w, request)
 			result := w.Result()
 			assert.Equal(t, tc.expectedCode, result.StatusCode, "Код ответа не совпадает с ожидаемым")
+			defer result.Body.Close()
 		})
 	}
 }
