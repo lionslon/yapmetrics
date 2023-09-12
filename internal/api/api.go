@@ -1,8 +1,6 @@
 package api
 
 import (
-	"flag"
-	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/lionslon/yapmetrics/internal/handlers"
 	"github.com/lionslon/yapmetrics/internal/storage"
@@ -12,16 +10,12 @@ import (
 type APIServer struct {
 	storage *storage.MemStorage
 	echo    *echo.Echo
-	addr    string
 }
 
 func New() *APIServer {
 	apiS := &APIServer{}
 	apiS.storage = storage.New()
 	apiS.echo = echo.New()
-	address := flag.String("a", "localhost:8080", "address and port to run server")
-	flag.Parse()
-	apiS.addr = *address
 
 	apiS.echo.GET("/", handlers.AllMetrics(apiS.storage))
 	apiS.echo.GET("/value/:typeM/:nameM", handlers.MetricsValue(apiS.storage))
@@ -31,8 +25,7 @@ func New() *APIServer {
 }
 
 func (a *APIServer) Start() error {
-	fmt.Println("Running server on", a.addr)
-	err := a.echo.Start(a.addr)
+	err := a.echo.Start(":8080")
 	if err != nil {
 		log.Fatal(err)
 	}
